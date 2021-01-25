@@ -4,6 +4,7 @@
   "description": "Percy Test",
   "main": "index.js",
   "scripts": {
+    "start": "http-server -s -p 8000",
     "snapshots": "percy exec -- node snapshots.js"
   },
   "repository": {
@@ -22,6 +23,7 @@
   },
   "homepage": "https://github.com/Sadorus/sadorus.github.io#readme",
   "devDependencies": {
-    "@percy/script": "^1.1.0"
+    "@percy/script": "^1.1.0",
+    "http-server": "^0.12.3"
   }
 }
