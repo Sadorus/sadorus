@@ -1,20 +1,27 @@
 version: 2.1
 
-orbs:
- percy: percy/agent@0.1.3
+default_steps: &default_steps
+  steps:
+    - checkout
+    - run: npm ci
+    - run: npm run snapshots
 
 jobs:
- run_tests:
-   parallelism: 3
-   steps:
-     - attach_workspace:
-         at: .
-     - run: echo "your tests run here"
+  node_8:
+    docker:
+      - image: circleci/node:8-browsers
+    environment:
+      PERCY_ENABLE: 0
+    <<: *default_steps
+  node_10_with_percy:
+    # We've opted this node version to be the one that runs and reports Percy's status
+    docker:
+      - image: circleci/node:10-browsers
+    <<: *default_steps
 
 workflows:
- test:
-   jobs:
-     - run_tests
-     - percy/finalize_all:
-         requires:
-           - run_tests
+  version: 2
+  test:
+    jobs:
+      - node_8
+      - node_10_with_percy
